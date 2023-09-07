@@ -8,7 +8,7 @@ import OrderHistoryPage from './pages/OrderHistoryPage';
 import NavBar from './components/NavBar';
 
 function App() {
-  const [user, setUser] = useState("jgfjg");
+  const [user, setUser] = useState();
   return (
     <div className="App">
       { user ?
