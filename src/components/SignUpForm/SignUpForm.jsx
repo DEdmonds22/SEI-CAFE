@@ -1,3 +1,5 @@
+// This JSX file is a react component responsible for rendering a sign-up form in your app's user interface. It defines the form fields, handles user input, and sends the form data to the server for user registration. 
+
 import { Component } from "react";
 import { signUp } from '../../utilities/users-service';
 
