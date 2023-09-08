@@ -17,6 +17,10 @@ app.use(express.json());
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'build')));
 
+/* Mount the Router */
+// `/api/users` our BASE_URL / api endpoint in the users-api.js file. `./routes/api/users` is calling/refering to using the routes in that users.js file if the request route `/api/users` matches.
+app.use('/api/users', require('./routes/api/users'));
+
 /* Defines the "Catch All" Route */
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
