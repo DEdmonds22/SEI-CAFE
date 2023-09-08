@@ -16,6 +16,7 @@ app.use(express.json());
 // mount & configure the serve-favicon & static middleware
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'build')));
+app.use(require('./config/checkToken'));
 
 /* Mount the Router */
 // `/api/users` our BASE_URL / api endpoint in the users-api.js file. `./routes/api/users` is calling/refering to using the routes in that users.js file if the request route `/api/users` matches.
