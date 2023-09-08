@@ -44,7 +44,6 @@ async function login(req, res) {
                 };
             });
 
-        // if any program breaking error happens inside of the try block, this code runs here and the program continues as normal.
     } catch(error) {
         res.status(400).json({ error });
     };
