@@ -26,7 +26,64 @@ function createJWT(user) {
     );
 };
 
+async function login(req, res) {
+    // we need the try catch block so that if there is an error anywhere in our function, the program keeps going instead of crashing!
+    try {
+
+        // this is a findOne for a single user matching the email that was input into the login form
+        const user = await User.findOne({ email: req.body.email })
+
+        // after the findOne completes, we do this next...
+        .then(foundUser => {
+
+            // note: findOne will not error if there is no user found, instead it just sets foundUser to undefined. Therefore, we have to check if a  user was found.
+            if (foundUser) {
+
+                //if a user was found, we then compare the password they entered in the login form with the password stored in the database. We don't have to input the salt because the hash in the database also contains a key used to rehash a new password for comparison.
+                bcrypt.compare(req.body.password, foundUser.password, (error, result) => {
+                    
+                    // if there was an error in the compare, this runs...
+                    if (error) {
+                        console.log(error);
+                        res.status(400).json(error);
+
+                        //if there was an error, this runs (important: the password being wrong doesn;t count as an error!)
+                    } else {
+
+                        // if the passwords match...
+                        if (result === true) {
+                            
+                            // create a tooken using the info that we found initally
+                            const token = createJWT(foundUser);
+
+                            // sends back a status code of 200 (ok) as well as the token that we just created
+                            res.status(200).json(token);
+
+                            // if the passwords don't match
+                        } else {
+
+                            // sends back a status code of 403 (invalid password) as well as a message stating why
+                            res.status(403).json({ error: 'Invalid password!' });
+                        };
+                    };
+                });
+                
+                // if a user was not found matching email provided
+            } else {
+
+                // sends back a 404 error code which means no user was found
+                res.status(404).json({ error: 'User not found '});
+            };
+        });
+
+        // if any program breaking error happens inside of the try block, this code runs here and the program continues as normal.
+    } catch {
+        res.status(400).json({ error });
+    };
+};
+
 module.exports = {
-    create
+    create,
+    login
 };
 // create is in an object because we're gonna have multiple things exported.
