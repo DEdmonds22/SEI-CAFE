@@ -35,3 +35,8 @@ export async function signUp(userData) {
     localStorage.setItem('token', token);
     return getUser();
 };
+
+// only function is to remove the token
+export function logOut() {
+    localStorage.removeItem('token');
+};
